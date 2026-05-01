@@ -10,62 +10,74 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 2. DARK THEME CSS ---
+# --- 2. PREMIUM BLACK THEME CSS ---
 st.markdown("""
     <style>
-    /* Dark Background */
+    /* Deep Black Background */
     .stApp {
         background-color: #0E1117;
         color: #FFFFFF;
     }
     
-    /* Sidebar Dark Theme */
+    /* Sidebar Styling */
     [data-testid="stSidebar"] {
         background-color: #161B22 !important;
         border-right: 1px solid #30363D;
     }
 
-    /* Glassmorphism Cards for Dark Theme */
+    /* Dark Glassmorphism Input Cards */
     .input-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
         border-radius: 15px;
-        padding: 20px;
+        padding: 25px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 20px;
     }
 
-    /* High Contrast Text */
+    /* Text Color Styling */
     h1, h2, h3, p, label, .stMarkdown {
         color: #E6EDF3 !important;
     }
 
-    /* Input Box Visibility */
-    input, select, .stSelectbox, .stNumberInput {
-        background-color: #0D1117 !important;
-        color: white !important;
-    }
-
-    /* Button Styling */
+    /* Premium Blue Button */
     .stButton>button {
         background: linear-gradient(45deg, #1f6feb, #58a6ff) !important;
         color: white !important;
-        border-radius: 8px;
+        border-radius: 10px;
         border: none;
-        height: 3em;
+        height: 3.5em;
         font-weight: bold;
         width: 100%;
+        box-shadow: 0 4px 15px rgba(31, 111, 235, 0.3);
+        transition: 0.3s;
+    }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
+    }
+    
+    /* Banner Styling */
+    .banner-img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. SIDEBAR (Anonymized) ---
+# --- 3. SIDEBAR (Thematic Sidebar Image) ---
 with st.sidebar:
-    st.title("📊 Analysis Dashboard")
-    st.markdown("---")
-    st.write("Use this AI-powered diagnostic tool to assess student wellbeing metrics based on academic and lifestyle data.")
-    st.markdown("---")
-    st.caption("BCA Final Year Project - 2026")
+    # High-quality thematic image related to mental health/analysis
+    st.image("https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=2070&auto=format&fit=crop")
+    st.markdown("### 📊 System Diagnostics")
+    st.write("Assess student wellbeing metrics using automated machine learning analysis.")
+    st.divider()
+    st.caption("AI Diagnostic Tool v2.0")
 
 # --- 4. ASSET LOADING ---
 @st.cache_resource
@@ -89,6 +101,9 @@ def encode_input(col, value):
     return encoding_maps.get(col, {}).get(value, global_mean)
 
 # --- 5. MAIN UI ---
+# The Professional Green/Nature Banner
+st.markdown('<img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop" class="banner-img">', unsafe_allow_html=True)
+
 st.markdown("<h1 style='text-align: center;'>🎓 AI Student Depression Analytics</h1>", unsafe_allow_html=True)
 st.divider()
 
@@ -101,7 +116,7 @@ if model:
         gender = st.selectbox("Gender", ["Select...", "Male", "Female"])
         age = st.slider("Age", 18, 45, 18) 
         city = st.text_input("City", placeholder="Enter city...")
-        degree = st.text_input("Degree", placeholder="e.g. BCA")
+        degree = st.text_input("Degree", placeholder="BCA / MCA / B.Tech")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
@@ -123,9 +138,9 @@ if model:
         fam_history = st.selectbox("Family History", ["Select...", "No", "Yes"])
         st.markdown('</div>', unsafe_allow_html=True)
 
-    if st.button("🚀 RUN AI DIAGNOSTIC"):
+    if st.button("🚀 INITIATE ANALYSIS"):
         if "Select..." in [gender, diet, suicidal, fam_history]:
-            st.warning("Please complete all selections.")
+            st.warning("Please ensure all profile and lifestyle dropdowns are selected.")
         else:
             try:
                 features = [
@@ -139,9 +154,9 @@ if model:
                 
                 st.divider()
                 if prediction[0] == 1:
-                    st.error("### ⚠️ HIGH RISK DETECTED")
+                    st.error("### ⚠️ ANALYSIS: HIGH RISK DETECTED")
                 else:
-                    st.success("### ✅ LOW RISK DETECTED")
+                    st.success("### ✅ ANALYSIS: LOW RISK DETECTED")
                     st.balloons()
             except Exception as e:
                 st.error(f"Prediction Error: {e}")
