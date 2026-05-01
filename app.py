@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import os
+from PIL import Image
 
 # --- 1. PAGE CONFIG ---
 st.set_page_config(
@@ -19,7 +20,7 @@ st.markdown("""
         color: #FFFFFF;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Dark Theme */
     [data-testid="stSidebar"] {
         background-color: #161B22 !important;
         border-right: 1px solid #30363D;
@@ -57,22 +58,12 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
     }
-    
-    /* Banner Styling */
-    .banner-img {
-        width: 100%;
-        height: 280px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. SIDEBAR (Thematic Sidebar Image) ---
+# --- 3. SIDEBAR ---
 with st.sidebar:
-    # High-quality thematic image related to mental health/analysis
+    # High-quality thematic image for analysis
     st.image("https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=2070&auto=format&fit=crop")
     st.markdown("### 📊 System Diagnostics")
     st.write("Assess student wellbeing metrics using automated machine learning analysis.")
@@ -101,8 +92,12 @@ def encode_input(col, value):
     return encoding_maps.get(col, {}).get(value, global_mean)
 
 # --- 5. MAIN UI ---
-# The Professional Green/Nature Banner
-st.markdown('<img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop" class="banner-img">', unsafe_allow_html=True)
+# Displaying your specific "Mental Health" banner
+try:
+    banner = Image.open("image_4bbf61.jpg")
+    st.image(banner, use_container_width=True)
+except Exception as e:
+    st.warning("Please ensure 'image_4bbf61.jpg' is in your project folder.")
 
 st.markdown("<h1 style='text-align: center;'>🎓 AI Student Depression Analytics</h1>", unsafe_allow_html=True)
 st.divider()
@@ -116,7 +111,7 @@ if model:
         gender = st.selectbox("Gender", ["Select...", "Male", "Female"])
         age = st.slider("Age", 18, 45, 18) 
         city = st.text_input("City", placeholder="Enter city...")
-        degree = st.text_input("Degree", placeholder="BCA / MCA / B.Tech")
+        degree = st.text_input("Degree", placeholder="e.g. BCA")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
@@ -140,7 +135,7 @@ if model:
 
     if st.button("🚀 INITIATE ANALYSIS"):
         if "Select..." in [gender, diet, suicidal, fam_history]:
-            st.warning("Please ensure all profile and lifestyle dropdowns are selected.")
+            st.warning("Please complete all profile and lifestyle fields.")
         else:
             try:
                 features = [
