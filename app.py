@@ -93,13 +93,13 @@ def encode_input(col, value):
 
 # --- 5. MAIN UI ---
 # Displaying your specific "Mental Health" banner
+# --- 5. MAIN UI ---
 try:
-    banner = Image.open("image_4bbf61.jpg")
+    # Use 'banner.jpg' here because that's what you renamed the file to
+    banner = Image.open("banner.jpg")
     st.image(banner, use_container_width=True)
 except Exception as e:
-    st.warning("Please ensure 'image_4bbf61.jpg' is in your project folder.")
-
-st.markdown("<h1 style='text-align: center;'>🎓 AI Student Depression Analytics</h1>", unsafe_allow_html=True)
+    st.warning("Banner image not found. Please ensure 'banner.jpg' is in your project folder.")
 st.divider()
 
 if model:
